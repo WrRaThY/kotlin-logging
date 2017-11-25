@@ -4,14 +4,14 @@ class ClassWithLoggingForLocationTesting {
     companion object : KLogging()
 
     fun log() {
-        logger.info("test")
+        LOG.info("test")
     }
 
     fun logLazy() {
-        logger.info { "test" }
+        LOG.info { "test" }
     }
 
     fun logNull() {
-        logger.info(null)
+        LOG.info(null)
     }
 }

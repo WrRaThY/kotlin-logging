@@ -10,7 +10,7 @@ import org.slf4j.spi.LocationAwareLogger
  * A class wrapping a [LocationAwareLogger] instance preserving
  * location information with the correct fully qualified class name.
  */
-internal class LocationAwareKLogger(override val underlyingLogger: LocationAwareLogger) : KLogger, Logger by underlyingLogger {
+internal class LocationAwareKLogger(override val underlyingLogger: LocationAwareLogger) : KLogger(underlyingLogger), Logger by underlyingLogger {
 
     private val fqcn: String = LocationAwareKLogger::class.java.name
 

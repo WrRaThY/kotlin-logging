@@ -1,5 +1,5 @@
 buildscript {
-    ext.kotlin_version = '1.1.51'
+    ext.kotlin_version = '1.1.61'
 
     repositories {
         mavenCentral()
@@ -9,15 +9,8 @@ buildscript {
     }
 }
 
-plugins {
-    id "com.jfrog.bintray" version "1.7"
-}
-
-group 'MicroUtils'
-version '1.4.5'
-
-
-
+group 'priv.wrrathy'
+version '0.0.1'
 
 apply plugin: 'kotlin'
 // Apply the java plugin to add support for Java
@@ -32,38 +25,19 @@ repositories {
 
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    compile "org.slf4j:slf4j-api:1.7.21"
-    testCompile "org.slf4j:slf4j-log4j12:1.7.21"
+    compile 'org.slf4j:slf4j-ext:1.7.25'
+    testCompile "org.slf4j:slf4j-log4j12:1.7.25"
     testCompile "log4j:log4j:1.2.17"
     testCompile "org.mockito:mockito-all:1.10.19"
     testCompile 'junit:junit:4.12'
 }
 
-//https://github.com/bintray/gradle-bintray-plugin
-bintray {
-    user = 'oshai'
-    key = 'my_key' //https://bintray.com/profile/edit
-    publications = ['MyPublication']
-    pkg {
-        repo = 'kotlin-logging'
-        name = 'kotlin-logging'
-        userOrg = 'microutils'
-        licenses = ['Apache-2.0']
-        vcsUrl = 'https://github.com/MicroUtils/kotlin-logging'
-        version {
-            name = '1.4.5'
-            desc = "kotlin-logging 1.4.5 - Lightweight logging framework for Kotlin"
-            released  = new Date()
-        }
-    }
-}
 
-// kotlin compiler compatibility options
 compileKotlin {
-    kotlinOptions {
-        apiVersion = "1.0"
-        languageVersion = "1.0"
-    }
+    kotlinOptions.jvmTarget = "1.8"
+}
+compileTestKotlin {
+    kotlinOptions.jvmTarget = "1.8"
 }
 
 // custom tasks for creating source/javadoc jars
@@ -83,14 +57,14 @@ artifacts {
 }
 
 def pomConfig = {
-    name "kotlin-logging"
-    description "kotlin-logging $version - Lightweight logging framework for Kotlin"
-    url "https://github.com/MicroUtils/kotlin-logging"
+    name "kotlin-logging-ext"
+    description "kotlin-logging-ext $version - slf4j-ext wrapper for kotlin"
+    url "https://github.com/WrRaThY/kotlin-logging-ext"
 
     scm {
-        url "http://github.com/MicroUtils/kotlin-logging/tree/master"
-        connection "scm:git:git://github.com/MicroUtils/kotlin-logging.git"
-        developerConnection "scm:git:ssh://github.com:MicroUtils/kotlin-logging.git"
+        url "http://github.com/WrRaThY/kotlin-logging-ext/tree/master"
+        connection "scm:git:git://github.com/WrRaThY/kotlin-logging-ext.git"
+        developerConnection "scm:git:ssh://github.com:WrRaThY/kotlin-logging-ext.git"
     }
     licenses {
         license {
@@ -100,31 +74,8 @@ def pomConfig = {
     }
     developers {
         developer {
-            name "Ohad Shai"
-            email "ohadshai@gmail.com"
-            organization "github"
-            organizationUrl "http://www.github.com"
+            name "WrRaThY"
         }
     }
 }
-
-publishing {
-    publications {
-        MyPublication(MavenPublication) {
-            pom.withXml {
-                def root = asNode()
-                root.appendNode('description', "kotlin-logging $version - Lightweight logging framework for Kotlin")
-                root.children().last() + pomConfig
-            }
-            from components.java
-            groupId 'io.github.microutils'
-            artifactId 'kotlin-logging'
-            version version
-
-            artifact sourcesJar
-            artifact javadocJar
-        }
-    }
-}
-
 
